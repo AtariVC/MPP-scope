@@ -1,4 +1,0 @@
-2025-10-15 20:33:13.564 | DEBUG | main_serial_dialog_tcp.py:286 | COM5, Baudrate=125000, Parity=None, Stopbits=1, Bytesize=8
-2025-10-15 20:33:21.261 | ERROR | async_task_manager.py:79 | Ошибка в HH_task: len(X) must be len(Y)+1 since stepMode=True (got (12,) and (12,))
-2025-10-15 20:33:24.951 | DEBUG | async_task_manager.py:83 | Задача ACQ_task завершена: None
-2025-10-15 20:33:24.966 | DEBUG | async_task_manager.py:55 | Задача 'HH_task' не найдена или уже завершена

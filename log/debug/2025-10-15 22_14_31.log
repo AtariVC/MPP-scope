@@ -1,7 +1,0 @@
-2025-10-15 22:14:33.735 | DEBUG | main_serial_dialog_tcp.py:286 | COM5, Baudrate=125000, Parity=None, Stopbits=1, Bytesize=8
-2025-10-15 22:15:00.145 | ERROR | run_meas_widget.py:120 | Serial отключен
-2025-10-15 22:15:00.145 | ERROR | ddii_command.py:337 | Modbus Error: [Connection] Not connected[AsyncModbusSerialClient COM5:0]
-2025-10-15 22:15:00.146 | DEBUG | ddii_command.py:338 | МПП не отвечает
-2025-10-15 22:15:00.146 | ERROR | ddii_command.py:435 | Modbus Error: [Connection] Not connected[AsyncModbusSerialClient COM5:0]
-2025-10-15 22:15:00.146 | DEBUG | ddii_command.py:436 | МПП не отвечает
-2025-10-15 22:15:00.149 | DEBUG | async_task_manager.py:83 | Задача ACQ_task завершена: None
