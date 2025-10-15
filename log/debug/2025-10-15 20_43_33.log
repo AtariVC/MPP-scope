@@ -1,0 +1,3 @@
+2025-10-15 20:43:38.713 | DEBUG | main_serial_dialog_tcp.py:286 | COM5, Baudrate=125000, Parity=None, Stopbits=1, Bytesize=8
+2025-10-15 20:43:39.864 | ERROR | run_meas_widget.py:121 | Ошибка запуска задач: 'RunMeasWidget' object has no attribute 'request_hist_flag'
+2025-10-15 20:43:39.945 | DEBUG | async_task_manager.py:83 | Задача ACQ_task завершена: None

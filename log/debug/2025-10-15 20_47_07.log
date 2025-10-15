@@ -1,0 +1,3 @@
+2025-10-15 20:47:09.775 | DEBUG | main_serial_dialog_tcp.py:286 | COM5, Baudrate=125000, Parity=None, Stopbits=1, Bytesize=8
+2025-10-15 20:47:11.644 | ERROR | run_meas_widget.py:127 | Ошибка (ACQ): 'RunMeasWidget' object has no attribute 'wr_log_flag'
+2025-10-15 20:47:11.692 | DEBUG | async_task_manager.py:77 | Задача ACQ_task отменена

@@ -1,0 +1,4 @@
+2025-10-15 20:38:30.530 | DEBUG | main_serial_dialog_tcp.py:286 | COM5, Baudrate=125000, Parity=None, Stopbits=1, Bytesize=8
+2025-10-15 20:38:33.327 | ERROR | run_meas_widget.py:136 | Ошибка запуска задач: name 'HH_task' is not defined
+2025-10-15 20:38:33.328 | ERROR | run_meas_widget.py:136 | Ошибка (ACQ): 'GraphWidget' object has no attribute 'hp_sipm'
+2025-10-15 20:38:33.407 | DEBUG | async_task_manager.py:77 | Задача ACQ_task отменена
