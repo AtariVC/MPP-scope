@@ -25,19 +25,13 @@ modules_path = Path(__file__).resolve().parent.parent.parent
 sys.path.append(str(src_path))
 sys.path.append(str(modules_path))
 
-try:
-    from modules.Engine.widgets.oscilloscope.graph_widget import GraphWidget  # noqa: E402
-    from modules.Engine.widgets.oscilloscope.measure_widget import MeasureWidget
-    from modules.Main_Serial.main_serial_dialog_tcp import SerialConnect  # noqa: E402
-    from src.async_task_manager import AsyncTaskManager  # noqa: E402
-    from src.ddii_command import ModbusCMCommand, ModbusMPPCommand  # noqa: E402
-    from src.event.event import Event  # noqa: E402
-    from src.modbus_worker import ModbusWorker  # noqa: E402
-    from src.parsers import Parsers  # noqa: E402
-    from src.print_logger import PrintLogger  # noqa: E402
-    from src.filters_data import FiltersData
-except ImportError:
-    from filters_data import FiltersData
+from modules.Engine.widgets.oscilloscope.graph_widget import GraphWidget  # noqa: E402
+from modules.Main_Serial.main_serial_dialog_tcp import SerialConnect  # noqa: E402
+from src.async_task_manager import AsyncTaskManager  # noqa: E402
+from src.event.event import Event  # noqa: E402
+from src.modbus_worker import ModbusWorker  # noqa: E402
+from src.parsers import Parsers  # noqa: E402
+from src.filters_data import FiltersData
 
 
 class RunMeasWidget(QtWidgets.QDialog):
@@ -105,7 +99,6 @@ class RunMeasWidget(QtWidgets.QDialog):
             self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
         else:
             self.task_manager = AsyncTaskManager()
-            self.logger = PrintLogger()
 
     def init_flags(self):
         for checkBox, flag in self.checkbox_flag_mapping.items():

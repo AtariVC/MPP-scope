@@ -16,3 +16,5 @@ poetry.lock
 *.pyc
 poetry.lock
 *.lock
+*.exe
+/build

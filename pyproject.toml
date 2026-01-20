@@ -9,6 +9,7 @@ dependencies = [
     "loguru>=0.7.3",
     "numpy>=2.3.3",
     "pandas>=2.3.3",
+    "pyinstaller>=6.18.0",
     "pymodbus==3.6.8",
     "pyqt6>=6.9.1",
     "pyqtgraph>=0.13.7",
