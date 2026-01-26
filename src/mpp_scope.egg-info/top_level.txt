@@ -1,3 +1,4 @@
+QLineEdit_custom_resize
 __init__
 async_task_manager
 craft_custom_widget
@@ -15,8 +16,6 @@ parsers_pack
 plot_renderer
 print_logger
 py_toggle
-signal_manager
 txt_docs
 ui
-write_data_to_file
 ww_maker

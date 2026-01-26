@@ -1,6 +1,6 @@
 from PyQt6 import QtWidgets, QtCore
 import sys
-from modules.Engine.engine import Engine
+from modules.Main.window_linker import WindowLinker
 import qtmodern.styles
 from qtmodern.windows import ModernWindow
 import qasync
@@ -10,7 +10,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     qtmodern.styles.dark(app)
     # light(app)
-    w: Engine = Engine()
+    w: WindowLinker = WindowLinker()
     # w.show()
     mw: ModernWindow = ModernWindow(w)
     mw.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground, False)  # fix flickering on resize window

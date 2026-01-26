@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "async>=0.6.2",
+    "keithley2600>=2.1.0",
     "loguru>=0.7.3",
     "numpy>=2.3.3",
     "pandas>=2.3.3",

@@ -26,8 +26,8 @@ sys.path.append(str(src_path))
 sys.path.append(str(modules_path))
 
 try:
-    from modules.Engine.widgets.oscilloscope.graph_widget import GraphWidget  # noqa: E402
-    from modules.Engine.widgets.oscilloscope.measure_widget import MeasureWidget
+    from modules.Main.widgets.oscilloscope.graph_widget import GraphWidget  # noqa: E402
+    from modules.Main.widgets.oscilloscope.measure_widget import MeasureWidget
     from modules.Main_Serial.main_serial_dialog_tcp import SerialConnect  # noqa: E402
     from src.async_task_manager import AsyncTaskManager  # noqa: E402
     from src.ddii_command import ModbusCMCommand, ModbusMPPCommand  # noqa: E402
