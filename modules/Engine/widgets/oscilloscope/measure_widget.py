@@ -6,13 +6,8 @@ from functools import partial
 
 # from save_config import ConfigSaver
 from pathlib import Path
-from typing import Any, Awaitable, Callable, Coroutine
 
-import numpy as np
-import qasync
-import qtmodern.styles
-from pymodbus.client import AsyncModbusSerialClient
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtWidgets
 from qtpy.uic import loadUi
 
 # from src.write_data_to_file import write_to_hdf5_file
@@ -24,13 +19,6 @@ modules_path = Path(__file__).resolve().parent.parent.parent
 # Добавляем папку src в sys.path
 sys.path.append(str(src_path))
 sys.path.append(str(modules_path))
-
-
-from modules.Engine.widgets.oscilloscope.graph_widget import GraphWidget  # noqa: E402
-from modules.Main_Serial.main_serial_dialog_tcp import SerialConnect  # noqa: E402
-from src.async_task_manager import AsyncTaskManager  # noqa: E402
-from src.event.event import Event  # noqa: E402
-from src.filters_data import FiltersData  # noqa: E402
 
 
 class MeasureWidget(QtWidgets.QDialog):

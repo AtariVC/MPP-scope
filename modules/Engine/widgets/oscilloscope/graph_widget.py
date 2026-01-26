@@ -1,13 +1,12 @@
 import asyncio
 import sys
-from dataclasses import dataclass
 
 # from save_config import ConfigSaver
 from pathlib import Path
 
 import qasync
 import qtmodern.styles
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtWidgets
 from qtpy.uic import loadUi
 
 ####### импорты из других директорий ######

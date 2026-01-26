@@ -1,14 +1,9 @@
-import asyncio
 import sys
 from pathlib import Path
 
-import qasync
-import qtmodern.styles
-from pymodbus.client import AsyncModbusSerialClient
-from PyQt6 import QtCore, QtWidgets
-from PyQt6.QtGui import QDoubleValidator, QFont, QIntValidator
-from PyQt6.QtWidgets import QGridLayout, QGroupBox, QSizePolicy, QSpacerItem
+from PyQt6 import QtWidgets
 from qtpy.uic import loadUi
+from loguru import logger
 
 ####### импорты из других директорий ######
 # /src
@@ -57,7 +52,7 @@ class FluxWidget(QtWidgets.QDialog):
         # self.parent.run_meas_widget.get_electron_hist_event.subscribe(self.update_gui_data_proton)
         # self.parent.run_meas_widget.get_proton_hist_event.subscribe(self.update_gui_data_proton)
         if __name__ != "__main__":
-            self.logger = self.parent.logger
+            self.logger = logger
             # self.w_ser_dialog.coroutine_finished.connect(self.get_client)
         else:
             pass

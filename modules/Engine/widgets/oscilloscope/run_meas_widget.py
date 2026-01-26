@@ -1,18 +1,16 @@
 import asyncio
 import datetime
-import struct
 import sys
 from functools import partial
 
 # from save_config import ConfigSaver
 from pathlib import Path
-from typing import Any, Awaitable, Callable, Coroutine
+from typing import Awaitable, Callable
 
 import numpy as np
 import qasync
 import qtmodern.styles
-from pymodbus.client import AsyncModbusSerialClient
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtWidgets
 from qtpy.uic import loadUi
 
 # from src.write_data_to_file import write_to_hdf5_file
@@ -276,8 +274,13 @@ class RunMeasWidget(QtWidgets.QDialog):
                     min: float  = self.fd.filters['min()'](data_sipm[1])
                     pk = self.fd.filters['pk()'](data_sipm[1])
                     self.measure_widget.update_widget_ca_b(max, min, pk)
+                    
+                    self.flags[self.start_measure_flag] = not self.flags[self.start_measure_flag]
+                    self.pushButton_run_measure.setText("Запустить изм.")
+                    break
                 except asyncio.exceptions.CancelledError:
                     return None
+
         except asyncio.CancelledError:
             ...
         except Exception as e:

@@ -1,6 +1,7 @@
 LICENSE
 README.md
 pyproject.toml
+src/QLineEdit_custom_resize.py
 src/__init__.py
 src/async_task_manager.py
 src/craft_custom_widget.py
@@ -16,9 +17,7 @@ src/parsers_pack.py
 src/plot_renderer.py
 src/print_logger.py
 src/py_toggle.py
-src/signal_manager.py
 src/txt_docs.py
-src/write_data_to_file.py
 src/ww_maker.py
 src/event/__init__.py
 src/event/__main__.py
