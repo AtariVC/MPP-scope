@@ -19,7 +19,11 @@ modules_path = Path(__file__).resolve().parent.parent.parent
 # Добавляем папку src в sys.path
 sys.path.append(str(src_path))
 sys.path.append(str(modules_path))
-
+from modules.Main.widgets.oscilloscope.graph_widget import GraphWidget  # noqa: E402
+from modules.Main_Serial.main_serial_dialog_tcp import SerialConnect  # noqa: E402
+from src.async_task_manager import AsyncTaskManager  # noqa: E402
+from src.event.event import Event  # noqa: E402
+from src.filters_data import FiltersData  # noqa: E402
 
 class MeasureWidget(QtWidgets.QDialog):
     """Управление окном run_meas_widget.ui
