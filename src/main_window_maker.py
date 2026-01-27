@@ -26,7 +26,7 @@ def create_split_widget(gridLayout_main_split: QGridLayout,
     splitter.addWidget(left_widget)
     splitter.addWidget(right_widget)
 
-def clear_left_widget(old_left_widget: QWidget, new_left_widget: QWidget):
+def replace_left_widget_splitter(old_left_widget: QWidget, new_left_widget: QWidget):
     # left_widget.deleteLater()
     # Удаляем все дочерние виджеты, но не сам контейнер
     # for child in left_widget.children():
@@ -173,77 +173,3 @@ def create_tab_widget_items(widget_model: Dict[str, Dict[str, QWidget]],
             if tab_widget_handler:
                 tab_widget.currentChanged.connect(tab_widget_handler)
     return tab_widget
-
-
-
-    # # Функция для создания вкладки "Осциллограф"
-# def __init__(self, *args) -> None:
-#         super().__init__()
-#         loadUi(Path(__file__).parent.joinpath('DialogGraphWidget2.ui'), self)
-#         try:
-#             self.client = args[0]
-#             self.run_widget: RunMaesWidget =  RunMaesWidget(self.client)
-#         except:
-#             self.run_widget: RunMaesWidget =  RunMaesWidget()
-#             # self.cm_cmd: ModbusCMCommand = ModbusCMCommand(self.client, self.logger)
-#             # self.mpp_cmd: ModbusMPPCommand = ModbusMPPCommand(self.client, self.logger)
-#         # self.mw = ModbusWorker()
-#         # self.logger = log_init()
-#         graph_widget: GraphWidget = GraphWidget()
-#         osc_widgets =  {"Измерение": self.run_widget}
-#         widget_model: Dict[str, Dict[str, QWidget]] = {"Осциллограмма": osc_widgets}
-#         init_graph_window(self.mainGridLayout, graph_widget, widget_model)
-
-
-    # def init_tab_widget_item_meas(widgets) -> QWidget:
-    #     """_summary_
-    #     Args:
-    #         widgets (dict): передаем сдоварь виджетов. {"Название": виджет Object}
-    #     Returns:
-    #         QWidget: Возвращает готовый табвиджет
-    #     """
-    #     ######################
-    #     grBox_with_widgets: list[QGroupBox] = []
-    #     spacer_v = QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-    #     spacer_v_scroll = QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-    #     # Создание виджетов в grBox
-    #     for key, item in widgets:
-    #         grBox_with_widgets.append(build_grBox(item, name=key))
-    #     ######################
-    #     # Создаем QScrollArea для прокручиваемого содержимого
-    #     scroll_area_menu = QScrollArea()
-    #     scroll_area_menu.setWidgetResizable(True)
-    #     scroll_content_widget = QWidget()
-    #     scroll_content_layout = QVBoxLayout(scroll_content_widget)
-    #     # Добавляем виджеты в scroll_content_layout
-    #     scroll_content_layout.addWidget(grBox_run_meas_widget)
-    #     ######################
-    #     scroll_content_layout.addItem(spacer_v_scroll)
-    #     scroll_area_menu.setWidget(scroll_content_widget)
-    #     menu_widget = QWidget()
-    #     menu_layout = QVBoxLayout(menu_widget)
-    #     menu_layout.addWidget(scroll_area_menu)
-    #     # Создаем макет для подключения
-    #     vLayout_ser_connect = QVBoxLayout()
-    #     add_serial_widget(vLayout_ser_connect, self.w_ser_dialog)
-    #     menu_layout.addItem(spacer_v)
-    #     menu_layout.addLayout(vLayout_ser_connect)
-    #     return menu_widget
-    # # Функция для создания вкладки "Парсер"
-    # def init_tab_widget_item_parser() -> QWidget:
-    #     parser_widget = QWidget()
-    #     # vLayout_parser = QVBoxLayout(parser_widget)
-    #     return parser_widget
-    
-    # tab_widget = QTabWidget()
-    # tab_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-    # # Настройка шрифта для вкладок
-    # tab_font = QFont()
-    # tab_font.setFamily("Arial")
-    # tab_font.setPointSize(12)
-    # tab_widget.setFont(tab_font)
-    # # Используем фабрику для добавления вкладок
-    # factories = build_tab_factories(widgets)
-    # for tab_name, factory in factories.items():
-    #     tab_widget.addTab(factory(), tab_name)
-    # return tab_widget

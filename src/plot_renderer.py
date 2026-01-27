@@ -69,7 +69,8 @@ class GraphPen():
         x, y = [], []
         for index, value in enumerate(data):
             x.append(index)
-            y.append(0 if value&0xFFF > 4000 else value&0xFFF)
+            # y.append(0 if value&0xFFF > 4000 else value&0xFFF)
+            y.append(value&0xFFF)
             # self.delete_big_bytes(value)
             # y.append(value)
         return x, y

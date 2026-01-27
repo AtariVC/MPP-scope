@@ -4,19 +4,11 @@ from pathlib import Path
 
 import qasync
 import qtmodern.styles
-from pymodbus.client import AsyncModbusSerialClient
 from PyQt6 import QtCore, QtWidgets
-from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtGui import QDoubleValidator, QFont, QIntValidator
 from PyQt6.QtWidgets import (
-    QGroupBox,
-    QScrollArea,
     QSizePolicy,
     QSpacerItem,
-    QSplitter,
-    QTabWidget,
     QVBoxLayout,
-    QWidget,
 )
 from qtmodern.windows import ModernWindow
 from qtpy.uic import loadUi
@@ -36,17 +28,17 @@ from Main.widgets.oscilloscope.graph_widget import GraphWidget  # noqa: E402
 from Main.widgets.oscilloscope.run_meas_widget import RunMeasWidget  # noqa: E402
 # from Engine.widgets.viewer.explorer_hdf5_widget import ExplorerHDF5Widget  # noqa: E402
 # from Engine.widgets.viewer.graph_viewer_widget import GraphViewerWidget  # noqa: E402
+
 from Main_Serial.main_serial_dialog_tcp import SerialConnect  # noqa: E402
 
 from src.craft_custom_widget import add_serial_widget
-from src.ddii_command import ModbusCMCommand, ModbusMPPCommand  # noqa: E402
 from src.log_config import log_init, log_s  # noqa: E402
-from src.main_window_maker import clear_left_widget, create_split_widget, create_tab_widget_items
+from src.main_window_maker import replace_left_widget_splitter, create_split_widget, create_tab_widget_items
 from src.modbus_worker import ModbusWorker  # noqa: E402
 from src.parsers import Parsers  # noqa: E402
+
 from src.parsers_pack import LineEditPack, LineEObj  # noqa: E402
 from modules.Main.widgets.oscilloscope.measure_widget import MeasureWidget
-
 
 class WindowLinker(QtWidgets.QMainWindow):
     gridLayout_main_split: QtWidgets.QGridLayout
@@ -79,10 +71,10 @@ class WindowLinker(QtWidgets.QMainWindow):
     def on_tab_widget_handler(self, index: int):
         tab_text: str = self.tab_widget.tabText(index)
         if tab_text == "Вьюер":
-            clear_left_widget(self.w_graph_widget, self.graph_viewer_widget)
+            replace_left_widget_splitter(self.w_graph_widget, self.graph_viewer_widget)
 
         if tab_text == "Осциллограф":
-            clear_left_widget(self.graph_viewer_widget, self.w_graph_widget)
+            replace_left_widget_splitter(self.graph_viewer_widget, self.w_graph_widget)
 
         if tab_text == "Вьюер":
             self.current_left_widget = self.graph_viewer_widget
