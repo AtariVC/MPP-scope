@@ -37,7 +37,7 @@ from modules.Calibrator.widgets.keithley_controll import KeithleyControl # noqa:
 from src.craft_custom_widget import add_serial_widget
 from src.ddii_command import ModbusCMCommand, ModbusMPPCommand  # noqa: E402
 from src.log_config import log_init, log_s  # noqa: E402
-from src.main_window_maker import clear_left_widget, create_split_widget, create_tab_widget_items
+from src.main_window_maker import replace_left_widget_splitter, create_split_widget, create_tab_widget_items
 from src.modbus_worker import ModbusWorker  # noqa: E402
 from src.parsers import Parsers  # noqa: E402
 from src.parsers_pack import LineEditPack, LineEObj  # noqa: E402
