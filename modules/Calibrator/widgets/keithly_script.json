@@ -1,54 +1,65 @@
 {
-	"mp1":{
-		"name": "МПП ДДИИ (пример калибровки v in list)",
-        "calibrate_mode": "True",
-        "modbus_settings":{
+    "mp1": {
+        "name": "МПП ДДИИ (пример калибровки v in list)",
+        "calibrate_mode": true,
+        "modbus_settings": {
             "id": 14,
-            "bodrate"
+            "bodrate": 125000
         },
-        "msr_settings": {
-            "convince_msr":{
-                "vg_lst": [0, 1, 2],
+        "convince_msr": {
+            "convince_msr": {
+                "vg_lst": [0,1,2],
                 "step_delay_s": 0.1
             }
         },
         "current_limit": 0.01,
-        "cont_mode": "False",
-        "save_table": "False",
-        "save_plot": "False"
-	},
-
-    "mp2":{
-		"name": "МПП ДДИИ (пример калибровки v linspace)", 
-        "calibrate_mode": "True",
-        "modbus_settings":{
+        "loop": false,
+        "save_table": false,
+        "save_plot": false
+    },
+    "mp2": {
+        "name": "МПП ДДИИ (пример калибровки v linspace)",
+        "calibrate_mode": true,
+        "modbus_settings": {
             "id": 14,
-            "bodrate"
+            "bodrate": 125000
         },
         "msr_settings": {
-            "linspace_msr":{
+            "linspace_msr": {
                 "vg_start": 0,
                 "vg_stop": 2.5,
                 "vg_step": 20
             }
         },
         "current_limit": 0.01,
-        "cont_mode": "False",
-        "save_table": "False",
-        "save_plot": "False"
-	},
-    
-    "mp3":{
-        "calibrate_mode": "False",
-		"name": "МПП ДДИИ (пример калибровки v const)", 
+        "loop": false,
+        "save_table": false,
+        "save_plot": false
+    },
+    "mp3": {
+        "calibrate_mode": false,
+        "name": "МПП ДДИИ (пример калибровки v const)",
         "msr_settings": {
-            "const_msr":{
+            "const_msr": {
                 "vg_cnst": 0
             }
         },
         "current_limit": 0.01,
-        "cont_mode": "False",
-        "save_table": "False",
-        "save_plot": "False"
-	}
+        "loop": false,
+        "save_table": false,
+        "save_plot": false
+    },
+    "mp3": {
+        "calibrate_mode": false,
+        "name": "МПП ДДИИ (continuous mode)",
+        "msr_settings": {
+            "const_msr": {
+                "vg_cnst": 0
+            }
+        },
+        "current_limit": 0.01,
+        "loop": false,
+        "save_table": false,
+        "save_plot": false
+    }
 }
