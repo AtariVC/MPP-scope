@@ -1,11 +1,10 @@
 import asyncio
 import json
-from pathlib import Path
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional
-from typing import Dict, Any
+from typing import Any, Dict, List, Optional
+
 from keithley2600 import Keithley2600, ResultTable, log_to_screen
 from keithley2600.result_table import ResultTablePlot
 from loguru import logger
@@ -47,37 +46,46 @@ class ModBusSettings(BaseModel):
     bodrate: int
 
 
-class MPConf(BaseModel):
+class MPModel(BaseModel):
     name: str
     calibrate_mode: bool  # Включить режим калибровки
     # (Нужно прописать настройки ModBus)
     modbus_settings: ModBusSettings | None = None
+    measure_settings: MeasureSettings
     current_limit: float  # Задать ограничение по току
     loop: bool  # позволяет зациклить измерение
     save_table: bool
     save_plot: bool
 
     @classmethod
-    def pydentic_model_init(cls, data: dict) -> Dict[str, "MPConf"]:
+    def pydentic_model_init(cls, data: dict) -> Dict[str, "MPModel"]:
         return {
             name: cls.model_validate(conf)
             for name, conf in data.items()
         }
 
-class MeasureProcess:
+class MeasureProcessing:
     def __init__(self, k: Keithley2600 | None = None):
         # self.k = k
-        self.mp_configs: Dict[str, MPConf] = {}
+        self.mp_models: Dict[str, MPModel] = {}
 
     def load_config(self, json_conf: str):
         with open(json_conf, "r", encoding="utf-8") as jsn:
             raw = json.load(jsn)
         try:
-            self.mp_configs = MPConf.pydentic_model_init(raw)
-            mp1_conf = self.mp_configs["mp1"]
-            print(mp1_conf.name)
+            self.mp_models = MPModel.pydentic_model_init(raw)
         except Exception as e:
             logger.error(e)
+    
+    def run_measure(self, mp_name: str):
+        mp_conf = self.mp_models.get(mp_name)
+        if not mp_conf:
+            logger.error(f"Measure config '{mp_name}' not found")
+            return
+        logger.debug(f"Running measure: {mp_conf.name}")
+        # Здесь должна быть логика выполнения измерения в зависимости от настроек mp_conf
+        # Например, если mp_conf.calibrate_mode == True, то выполняем калибровку
+        # Если mp_conf.loop == True, то зацикливаем измерение и т.д.
 
 if __name__ == "__main__":
     address = "10.6.1.222"
@@ -91,7 +99,7 @@ if __name__ == "__main__":
         logger.error(f"Error connection keithley: {e}")
     try:
         # if k:
-        mp: MeasureProcess = MeasureProcess()
+        mp: MeasureProcessing = MeasureProcessing()
         mp.load_config(json_conf)
     except Exception as e:
         logger.error(e)
