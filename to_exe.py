@@ -7,7 +7,7 @@ import os
 
 def to_exe() -> None:
     # icon: str = '--icon ' + str(cwd().joinpath('assets', 'settings.ico'))
-    flags: list[str] = ["--name MPP_utility", "--console", "--onefile",
+    flags: list[str] = ["--name MPP_utility_v.0.2", "--console", "--onefile",
                         "--clean", "--noconfirm"]
     main_path: str = str(Path(__file__).parent.joinpath('__main__.py'))
     ui_paths: list[str] = ['--add-data ' + str(f"\"{file};.\"")

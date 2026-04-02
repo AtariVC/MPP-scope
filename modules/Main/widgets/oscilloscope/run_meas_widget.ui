@@ -62,7 +62,7 @@
       <number>10</number>
      </property>
      <item row="2" column="2">
-      <widget class="QPushButton" name="pushButton_run_measure">
+      <widget class="QPushButton" name="pushButton_single_run_measure">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -88,7 +88,7 @@
         <string notr="true">font: 11pt &quot;MS Shell Dlg 2&quot;;</string>
        </property>
        <property name="text">
-        <string>Начать изм.</string>
+        <string>Одиночный запуск</string>
        </property>
       </widget>
      </item>
@@ -149,7 +149,7 @@
       </widget>
      </item>
      <item row="3" column="2">
-      <widget class="QPushButton" name="pushButton_calibr_acq">
+      <widget class="QPushButton" name="pushButton_continuous_run_measure">
        <property name="minimumSize">
         <size>
          <width>140</width>
@@ -160,7 +160,7 @@
         <string notr="true">font: 11pt &quot;MS Shell Dlg 2&quot;;</string>
        </property>
        <property name="text">
-        <string>Калибровать АЦП</string>
+        <string>Непрерывный запуск</string>
        </property>
       </widget>
      </item>

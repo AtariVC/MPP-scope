@@ -18,3 +18,4 @@ poetry.lock
 *.lock
 *.exe
 /build
+*.spec

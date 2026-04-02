@@ -42,7 +42,8 @@ class RunMeasWidget(QtWidgets.QDialog):
     """
 
     lineEdit_trigger: QtWidgets.QLineEdit
-    pushButton_run_measure: QtWidgets.QPushButton
+    pushButton_single_run_measure: QtWidgets.QPushButton
+    pushButton_continuous_run_measure: QtWidgets.QPushButton
     pushButton_autorun: QtWidgets.QPushButton
     checkBox_enable_test_csa: QtWidgets.QCheckBox
     gridLayout_meas: QtWidgets.QGridLayout
@@ -51,7 +52,6 @@ class RunMeasWidget(QtWidgets.QDialog):
     checkBox_hist_request: QtWidgets.QCheckBox
 
     checkBox_enable_trig_meas: QtWidgets.QCheckBox
-    pushButton_calibr_acq: QtWidgets.QPushButton
 
     checkBox_request_hist: QtWidgets.QCheckBox
 
@@ -92,8 +92,9 @@ class RunMeasWidget(QtWidgets.QDialog):
             # Остановка измерений при отключении Serial
             self.w_ser_dialog.disconnected.connect(self.on_serial_disconnected)
             self.task_manager = AsyncTaskManager(self.logger)
-            self.pushButton_run_measure.clicked.connect(self.pushButton_run_measure_handler)
-            self.pushButton_calibr_acq.clicked.connect(self.pushButton_calibr_acq_handler)
+            self.pushButton_single_run_measure.clicked.connect(self.pushButton_single_run_measure_handler)
+            self.pushButton_continuous_run_measure.clicked.connect(self.pushButton_continuous_run_measure_handler)
+            # self.pushButton_calibr_acq.clicked.connect(self.pushButton_calibr_acq_handler)
             self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
         else:
             self.task_manager = AsyncTaskManager()
@@ -134,7 +135,8 @@ class RunMeasWidget(QtWidgets.QDialog):
             self.logger.error(f"Error in stopping measurements: {str(e)}")
         # Сбрасываем флаг и UI
         self.flags[self.start_measure_flag] = False
-        self.pushButton_run_measure.setText("Запустить изм.")
+        self.pushButton_single_run_measure.setText("Одиночный запуск")
+        self.pushButton_continuous_run_measure.setText("Непрерывный запуск")
 
     @qasync.asyncSlot()
     async def init_mb_cmd(self) -> None:
@@ -165,26 +167,26 @@ class RunMeasWidget(QtWidgets.QDialog):
         if self.w_ser_dialog:
             self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
 
-    @qasync.asyncSlot()
-    async def pushButton_calibr_acq_handler(self):
-        if not await self.w_ser_dialog.check_connection():
-            self.logger.error("Нет подключения (ЦМ/МПП недоступны)")
-            return
-        # Обновляем клиент/ID для команд
-        await self.init_mb_cmd()
-        try:
-            await self.mpp_cmd.calibrate_ACQ()
-            buffer = self.w_ser_dialog.label_state_w.text()
-            self.w_ser_dialog.label_state_w.setText("Выполняется калибровка АЦП...")
-            await asyncio.sleep(5)
-            self.w_ser_dialog.label_state_w.setText("Калибровка АЦП завершена.")
-            await asyncio.sleep(2)
-            self.w_ser_dialog.label_state_w.setText(buffer)
-        except Exception as e:
-            await self._stop_measuring(f"Ошибка при калибровке: {e}")
+    # @qasync.asyncSlot()
+    # async def pushButton_calibr_acq_handler(self):
+    #     if not await self.w_ser_dialog.check_connection():
+    #         self.logger.error("Нет подключения (ЦМ/МПП недоступны)")
+    #         return
+    #     # Обновляем клиент/ID для команд
+    #     await self.init_mb_cmd()
+    #     try:
+    #         await self.mpp_cmd.calibrate_ACQ()
+    #         buffer = self.w_ser_dialog.label_state_w.text()
+    #         self.w_ser_dialog.label_state_w.setText("Выполняется калибровка АЦП...")
+    #         await asyncio.sleep(5)
+    #         self.w_ser_dialog.label_state_w.setText("Калибровка АЦП завершена.")
+    #         await asyncio.sleep(2)
+    #         self.w_ser_dialog.label_state_w.setText(buffer)
+    #     except Exception as e:
+    #         await self._stop_measuring(f"Ошибка при калибровке: {e}")
 
     @qasync.asyncSlot()
-    async def pushButton_run_measure_handler(self) -> None:
+    async def pushButton_single_run_measure_handler(self) -> None:
         """Запуск асинхронной задачи. Создаем задачу asyncio_measure_loop_request через creator_asyncio_tasks
         asyncio_ACQ_loop_request - непрерывный опрос МПП для получения данных АЦП
         """
@@ -194,12 +196,13 @@ class RunMeasWidget(QtWidgets.QDialog):
         time: str = current_datetime.strftime("%d-%m-%Y")[:23]
         self.path_to_save: Path = self.parent_path / time
 
-        ACQ_task: Callable[[], Awaitable[None]] = self.asyncio_ACQ_loop_request
+        # await self._stop_measuring()
+        self.pushButton_continuous_run_measure.setText("Непрерывный запуск")
+        ACQ_task: Callable[[], Awaitable[None]] = self.asyncio_ACQ_loop_request_single
         # HH_task: Callable[[], Awaitable[None]] = self.asyncio_HH_loop_request
         if await self.w_ser_dialog.check_connection():
-            self.flags[self.start_measure_flag] = not self.flags[self.start_measure_flag]
-            if self.flags[self.start_measure_flag]:
-                self.pushButton_run_measure.setText("Остановить изм.")
+            if not self.flags[self.start_measure_flag]:
+                self.pushButton_single_run_measure.setText("Остановить изм.")
                 # TODO: сделать чек боксы не активными
                 current_datetime = datetime.datetime.now()
                 self.name_file_save: str = current_datetime.strftime("%d-%m-%Y_%H-%M-%S-%f")[:23]
@@ -210,6 +213,7 @@ class RunMeasWidget(QtWidgets.QDialog):
                     # await ACQ_task()
                 except Exception as e:
                     await self._stop_measuring(f"Ошибка запуска задач: {e}")
+                self.flags[self.start_measure_flag] = True
             else:
                 # self.graph_done_signal.emit()
                 try:
@@ -217,11 +221,114 @@ class RunMeasWidget(QtWidgets.QDialog):
                 except Exception:
                     pass
                 self.task_manager.cancel_task("ACQ_task")
-                self.pushButton_run_measure.setText("Запустить изм.")
+                self.pushButton_single_run_measure.setText("Одиночный запуск")
         else:
             self.logger.error(f"Нет подключения")
 
-    async def asyncio_ACQ_loop_request(self) -> None:
+    @qasync.asyncSlot()
+    async def pushButton_continuous_run_measure_handler(self) -> None:
+        """Запуск асинхронной задачи. Создаем задачу asyncio_measure_loop_request через creator_asyncio_tasks
+        asyncio_ACQ_loop_request - непрерывный опрос МПП для получения данных АЦП
+        """
+        #### Path to save ####
+        self.parent_path: Path = Path("./log/output_graph_data").resolve()
+        current_datetime = datetime.datetime.now()
+        time: str = current_datetime.strftime("%d-%m-%Y")[:23]
+        self.path_to_save: Path = self.parent_path / time
+        # await self._stop_measuring()
+        self.pushButton_single_run_measure.setText("Одиночный запуск")
+        ACQ_task: Callable[[], Awaitable[None]] = self.asyncio_ACQ_loop_request_continuous
+        # HH_task: Callable[[], Awaitable[None]] = self.asyncio_HH_loop_request
+        if await self.w_ser_dialog.check_connection():
+            if not self.flags[self.start_measure_flag]:
+                self.pushButton_continuous_run_measure.setText("Остановить изм.")
+                # TODO: сделать чек боксы не активными
+                current_datetime = datetime.datetime.now()
+                self.name_file_save: str = current_datetime.strftime("%d-%m-%Y_%H-%M-%S-%f")[:23]
+                # Обновляем клиент/ID для команд
+                await self.init_mb_cmd()
+                try:
+                    self.task_manager.create_task(ACQ_task(), "ACQ_task")
+                    # await ACQ_task()
+                except Exception as e:
+                    await self._stop_measuring(f"Ошибка запуска задач: {e}")
+                self.flags[self.start_measure_flag] = True
+            else:
+                # self.graph_done_signal.emit()
+                await self.mpp_cmd.start_measure(on=0)
+                await self._stop_measuring()
+
+                self.task_manager.cancel_task("ACQ_task")
+                self.pushButton_continuous_run_measure.setText("Непрерывный запуск")
+        else:
+            self.logger.error(f"Нет подключения")
+
+    async def asyncio_ACQ_loop_request_single(self) -> None:
+        try:
+            lvl = int(self.lineEdit_trigger.text())
+            save: bool = False
+            if not self.w_ser_dialog.is_modbus_ready():
+                await self._stop_measuring("Потеряно соединение")
+                return
+            if self.flags[self.enable_trig_meas_flag]:
+                await self.mpp_cmd.set_level(lvl)
+                await self.mpp_cmd.start_measure(on=1)
+            self.graph_widget.show()
+            while 1:
+                if not self.w_ser_dialog.is_modbus_ready():
+                    await self._stop_measuring("Потеряно соединение")
+                    return
+                current_datetime = datetime.datetime.now()
+                self.name_data = current_datetime.strftime("%Y-%m-%d_%H-%M-%S-%f")[:23]
+                self.ACQ_task_sync_time_event.emit(self.name_data)  # для синхронизации данных по времени
+                if not self.flags[self.enable_trig_meas_flag]:
+                    await self.mpp_cmd.start_measure_forced(0)
+                    await self.mpp_cmd.start_measure_forced(1)
+                else:
+                    await self.mpp_cmd.issue_waveform()
+                result_ch0: bytes = await self.mpp_cmd.read_oscill(ch=0)
+                result_ch1: bytes = await self.mpp_cmd.read_oscill(ch=1)
+                # result_ch0_int = np.random.randint(np.random.randint(50, 200)+1, size=100).tolist()
+                # result_ch1_int = np.random.randint(np.random.randint(50, 200)+1, size=100).tolist()
+                result_ch0_int: list[int] = await self.parser.mpp_pars_16b(result_ch0)
+                result_ch1_int: list[int] = await self.parser.mpp_pars_16b(result_ch1)
+                # Сохранять только те данные которые выше порога
+                try:
+                    data_pips: tuple = await self.graph_widget.gp_pips.draw_graph(
+                        result_ch0_int,
+                        name_file_save_data=self.name_file_save,
+                        name_data=self.name_data,
+                        save_log=save,
+                        clear=True,
+                    )  # x, y
+                    data_sipm: tuple = await self.graph_widget.gp_sipm.draw_graph(
+                        result_ch1_int,
+                        name_file_save_data=self.name_file_save,
+                        name_data=self.name_data,
+                        save_log=save,
+                        clear=True,
+                    )  # x, y
+                    max: float = self.fd.filters['max()'](data_pips[1])
+                    min: float  = self.fd.filters['min()'](data_pips[1])
+                    pk = self.fd.filters['pk()'](data_pips[1])
+                    self.measure_widget.update_widget_ca_a(max, min, pk)
+                    max: float  = self.fd.filters['max()'](data_sipm[1])
+                    min: float  = self.fd.filters['min()'](data_sipm[1])
+                    pk = self.fd.filters['pk()'](data_sipm[1])
+                    self.measure_widget.update_widget_ca_b(max, min, pk)
+                    self.flags[self.start_measure_flag] = not self.flags[self.start_measure_flag]
+                    self.pushButton_single_run_measure.setText("Одиночный запуск")
+                    break
+                except asyncio.exceptions.CancelledError:
+                    return None
+
+        except asyncio.CancelledError:
+            ...
+        except Exception as e:
+            await self._stop_measuring(f"Ошибка (ACQ): {e}")
+            return
+    
+    async def asyncio_ACQ_loop_request_continuous(self) -> None:
         try:
             lvl = int(self.lineEdit_trigger.text())
             save: bool = False
@@ -275,9 +382,6 @@ class RunMeasWidget(QtWidgets.QDialog):
                     pk = self.fd.filters['pk()'](data_sipm[1])
                     self.measure_widget.update_widget_ca_b(max, min, pk)
                     
-                    self.flags[self.start_measure_flag] = not self.flags[self.start_measure_flag]
-                    self.pushButton_run_measure.setText("Запустить изм.")
-                    break
                 except asyncio.exceptions.CancelledError:
                     return None
 

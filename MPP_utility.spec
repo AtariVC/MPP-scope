@@ -2,10 +2,10 @@
 
 
 a = Analysis(
-    ['d:\\ddii_project\\MPP-scope\\__main__.py'],
+    ['d:\\git\\git-rebase\\MPP-scope\\__main__.py'],
     pathex=[],
     binaries=[],
-    datas=[('d:\\ddii_project\\MPP-scope\\modules', 'modules')],
+    datas=[('d:\\git\\git-rebase\\MPP-scope\\modules', 'modules')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
