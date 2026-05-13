@@ -142,7 +142,7 @@ class RunMeasWidget(QtWidgets.QDialog):
         if not self.w_ser_dialog or not self.w_ser_dialog.is_modbus_ready():
             self.logger.warning("Modbus не готов: нет активного serial-соединения")
             self.cm_cmd, self.mpp_cmd = (
-                self.w_ser_dialog.get_commands_interface(self.logger)
+                self.w_ser_dialog.get_commands_interface()
                 if self.w_ser_dialog
                 else (self.cm_cmd, self.mpp_cmd)
             )
@@ -151,10 +151,10 @@ class RunMeasWidget(QtWidgets.QDialog):
             ready = await self.w_ser_dialog.check_connection()
         except Exception as e:
             self.logger.warning(f"Не удалось обновить статус ЦМ/МПП при инициализации команд: {e}")
-            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
+            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
             return
         # Всегда берём команды через фабрику, она сама подставит нужный клиент/mpp_id
-        self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
+        self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
         if not ready:
             self.logger.warning("ЦМ/МПП недоступны — запуск измерений невозможен")
 
@@ -163,7 +163,7 @@ class RunMeasWidget(QtWidgets.QDialog):
         await self._stop_measuring("Serial отключен")
         # Обновляем команды через фабрику (вернутся null‑клиент команды)
         if self.w_ser_dialog:
-            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
+            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
 
     @qasync.asyncSlot()
     async def pushButton_calibr_acq_handler(self):

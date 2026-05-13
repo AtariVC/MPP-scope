@@ -112,7 +112,7 @@ class KeithleyControl(QtWidgets.QWidget):
         if __name__ != "__main__":
             self.w_ser_dialog: SerialConnect = self.parent.w_ser_dialog  # type: ignore
             self.w_ser_dialog.coroutine_finished.connect(self.init_mb_cmd)
-            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
+            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
 
         self.checkBox_cont_mode.toggled.connect(self.on_cont_mode_toggled)
         self.on_cont_mode_toggled(self.checkBox_cont_mode.isChecked())
@@ -123,14 +123,14 @@ class KeithleyControl(QtWidgets.QWidget):
         await self._stop_measuring("Serial отключен")
         # Обновляем команды через фабрику (вернутся null‑клиент команды)
         if self.w_ser_dialog:
-            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
+            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
     
     async def init_mb_cmd(self) -> None:
         """Инициализация командного интерфейса МПП и ЦМ"""
         if not self.w_ser_dialog or not self.w_ser_dialog.is_modbus_ready():
             self.logger.warning("Modbus не готов: нет активного serial-соединения")
             self.cm_cmd, self.mpp_cmd = (
-                self.w_ser_dialog.get_commands_interface(self.logger)
+                self.w_ser_dialog.get_commands_interface()
                 if self.w_ser_dialog
                 else (self.cm_cmd, self.mpp_cmd)
             )
@@ -139,10 +139,10 @@ class KeithleyControl(QtWidgets.QWidget):
             ready = await self.w_ser_dialog.check_connection()
         except Exception as e:
             self.logger.warning(f"Не удалось обновить статус ЦМ/МПП при инициализации команд: {e}")
-            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
+            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
             return
         # Всегда берём команды через фабрику, она сама подставит нужный клиент/mpp_id
-        self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
+        self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
         if not ready:
             self.logger.warning("ЦМ/МПП недоступны — запуск измерений невозможен")
 
