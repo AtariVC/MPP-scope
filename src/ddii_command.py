@@ -245,7 +245,7 @@ class ModbusMPPCommand(EnvironmentVar):
         
     async def get_mpp_struct(self) -> bytes:
         try:
-            result: ModbusResponse = await self.client.read_holding_registers(self.REG_MPP_UNIT_STRUCT, 
+            result: ModbusResponse = await self.client.read_holding_registers(self.REG_START_MPP_STRUCT, 
                                                                             13,
                                                                             slave=self.MPP_ID)
             await log_s(self.mw.send_handler.mess)
