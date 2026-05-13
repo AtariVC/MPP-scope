@@ -18,3 +18,5 @@ poetry.lock
 *.lock
 *.exe
 /build
+settings.json
+mpp_scope.egg-info
