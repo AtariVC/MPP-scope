@@ -16,7 +16,8 @@ mpp_unit: Frame = Frame('typeMPPUnit',[
     Row("Mean", 2),
     Row("Noise", 2),
     Row("CRC", 2, 'X')
-    ]
+    ],
+    byte_order="little",
 )
 
 mpp_ddii_unyt: Frame = Frame('typeMPPDDIIUnyt', [
@@ -51,5 +52,6 @@ mpp_ddii_unyt: Frame = Frame('typeMPPDDIIUnyt', [
     Row("particle_HCP_10", 2),                               # +64
     Row("particle_HCP_20", 2),                               # +65
     Row("particle_HCP_45", 2),                               # +66
-])
-
+],
+    byte_order="little",
+)
