@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "async>=0.6.2",
+    "bytes-parser",
     "keithley2600>=2.1.0",
     "loguru>=0.7.3",
     "numpy>=2.3.3",
@@ -18,3 +19,6 @@ dependencies = [
     "qasync>=0.28.0",
     "qtmodern>=0.2.0",
 ]
+
+[tool.uv.sources]
+bytes-parser = { git = "https://github.com/AtariVC/BytesParser.git" }

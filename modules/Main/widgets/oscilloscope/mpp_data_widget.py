@@ -48,9 +48,17 @@ class MPPDataWidget(QtWidgets.QDialog):
         else:
             self.w_ser_dialog: SerialConnect = self.parent.w_ser_dialog  # type: ignore
 
-        self.pushButton_mpp_request.clicked.connect()
-        self.pushButton_mpp_ddii_request.clicked.connect()
+        self.pushButton_mpp_request.clicked.connect(self.pushButton_mpp_request_hendler)
+        self.pushButton_mpp_ddii_request.clicked.connect(self.pushButton_mpp_ddii_request_hendler)
 
+
+    def pushButton_mpp_request_hendler(self):
+        ...
+    
+    def pushButton_mpp_ddii_request_hendler(self):
+        ...
+
+    
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
