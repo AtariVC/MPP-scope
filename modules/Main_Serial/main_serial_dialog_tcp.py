@@ -358,19 +358,19 @@ class SerialConnect(QtWidgets.QWidget, EnvironmentVar):
     def is_modbus_ready(self) -> bool:
         return self.client is not None
 
-    def get_commands_interface(self, logger) -> tuple[ModbusCMCommand, ModbusMPPCommand]:
+    def get_commands_interface(self) -> tuple[ModbusCMCommand, ModbusMPPCommand]:
         """Возвращает новые объекты команд с актуальным клиентом и MPP_ID.
         Если соединения нет, возвращает команды с null‑клиентом.
         """
         cli = self.client if self.client is not None else self._null_client
         if bool(self.checkBox_mpp_only.isChecked()):
-            cm = ModbusCMCommand(self._null_client, logger)
+            cm = ModbusCMCommand(self._null_client)
         else:
-            cm = ModbusCMCommand(cli, logger)
+            cm = ModbusCMCommand(cli)
         try:
-            mpp = ModbusMPPCommand(cli, logger, self.mpp_id)
+            mpp = ModbusMPPCommand(cli, self.mpp_id)
         except Exception:
-            mpp = ModbusMPPCommand(cli, logger)
+            mpp = ModbusMPPCommand(cli)
         return cm, mpp
 
     async def check_connection(self, only_cm = True, only_mpp = True) -> bool:

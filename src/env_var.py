@@ -28,11 +28,11 @@ class EnvironmentVar():
     CM_GET_TERM                     = 0x000F
     CM_DBG_GET_DESIRED_HVIP         = 0x0011
     
-
+    # mpp_ddii
     REG_MPP_COMMAND                 = 0x0000
     REG_MPP_ISSUE_WAVEFORM          = 0x0009
     REG_MPP_HH                      = 0x000A
-    REG_GET_MPP_STRUCT              = 0x0006
+    REG_START_MPP_STRUCT            = 0x0006
     REG_MPP_HIST_32                 = 0x0014
     REG_MPP_HIST_16                 = 0x0020
     REG_MPP_HIST_HCP                = 0x0026
@@ -40,6 +40,9 @@ class EnvironmentVar():
     REG_CALIBR_ALL_CH               = 0x0050
     REG_OSCILL_CH0                  = 0xA000
     REG_OSCILL_CH1                  = 0xA200
+    
+    # mpp
+    REG_MPP_UNIT_STRUCT             = 0x0007
 
     
 

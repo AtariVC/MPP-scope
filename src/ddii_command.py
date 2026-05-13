@@ -8,10 +8,11 @@ from pymodbus.pdu import ModbusResponse
 from src.env_var import EnvironmentVar
 from src.log_config import log_s
 from src.modbus_worker import ModbusWorker
+from loguru import logger
 
 
 class ModbusCMCommand(EnvironmentVar):
-    def __init__(self, client, logger, **kwargs):
+    def __init__(self, client, **kwargs):
         super().__init__()
         self.mw = ModbusWorker()
         self.client: AsyncModbusSerialClient = client
@@ -204,7 +205,7 @@ class ModbusMPPCommand(EnvironmentVar):
     Args:
         EnvironmentVar (_type_): внутренние постоянные окружения
     """
-    def __init__(self, client, logger, *args):
+    def __init__(self, client, *args):
         super().__init__()
         self.mw = ModbusWorker()
         self.client: AsyncModbusSerialClient = client
@@ -229,10 +230,34 @@ class ModbusMPPCommand(EnvironmentVar):
             self.logger.error(e)
             self.logger.debug('МПП не отвечает')
             return b'-1'
+        
+    async def get_ddii_mpp_struct(self) -> bytes:
+        try:
+            result: ModbusResponse = await self.client.read_holding_registers(self.REG_START_MPP_STRUCT, 
+                                                                            62,
+                                                                            slave=self.MPP_ID)
+            await log_s(self.mw.send_handler.mess)
+            return result.encode()
+        except Exception as e:
+            self.logger.error(e)
+            self.logger.debug('МПП не отвечает')
+            return b'-1'
+        
+    async def get_mpp_struct(self) -> bytes:
+        try:
+            result: ModbusResponse = await self.client.read_holding_registers(self.REG_MPP_UNIT_STRUCT, 
+                                                                            13,
+                                                                            slave=self.MPP_ID)
+            await log_s(self.mw.send_handler.mess)
+            return result.encode()
+        except Exception as e:
+            self.logger.error(e)
+            self.logger.debug('МПП не отвечает')
+            return b'-1'
 
     async def get_hist_32(self) -> bytes:
         try:
-            result: ModbusResponse = await self.client.read_holding_registers(self.REG_MPP_HIST_16, 
+            result: ModbusResponse = await self.client.read_holding_registers(self.REG_MPP_HIST_32, 
                                                                             12,
                                                                             slave=self.MPP_ID)
             await log_s(self.mw.send_handler.mess)
@@ -244,7 +269,7 @@ class ModbusMPPCommand(EnvironmentVar):
         
     async def get_hist_16(self) -> bytes:
         try:
-            result: ModbusResponse = await self.client.read_holding_registers(self.REG_MPP_HIST_32, 
+            result: ModbusResponse = await self.client.read_holding_registers(self.REG_MPP_HIST_16, 
                                                                             6,
                                                                             slave=self.MPP_ID)
             await log_s(self.mw.send_handler.mess)
@@ -256,7 +281,7 @@ class ModbusMPPCommand(EnvironmentVar):
 
     async def get_mpp_struct(self) -> bytes:
         try:
-            result: ModbusResponse = await self.client.read_holding_registers(self.REG_GET_MPP_STRUCT, 
+            result: ModbusResponse = await self.client.read_holding_registers(self.REG_START_MPP_STRUCT, 
                                                                             24,
                                                                             slave=self.MPP_ID)
             await log_s(self.mw.send_handler.mess)

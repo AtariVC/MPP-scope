@@ -11,6 +11,7 @@ from pathlib import Path
 from PyQt6 import QtWidgets
 from qtpy.uic import loadUi
 import qtmodern.styles
+from src.mpp_frames.mpp_frames import mpp_unit, mpp_ddii_unyt
 
 from loguru import logger
 
@@ -32,33 +33,43 @@ class MPPDataWidget(QtWidgets.QDialog):
     tableView_mpp_df: QtWidgets.QTableView
 
     pushButton_mpp_ddii_request: QtWidgets.QPushButton
-    tableView_mpp_ddii_mpp_df: QtWidgets.QTableView
+    tableView_mpp_ddii_df: QtWidgets.QTableView
 
     vLayout_ser_connect: QtWidgets.QVBoxLayout
 
-    def __init__(self, w_ser_dialog: SerialConnect) -> None:
-        super().__init__()
-        self.logger = logger
+    def __init__(self, w_ser_dialog: SerialConnect, parent: QtWidgets.QWidget | None = None) -> None:
+        super().__init__(parent)
         loadUi(Path(__file__).parent.joinpath("mpp_data_widget.ui"), self)
+
+        self.w_ser_dialog: SerialConnect = w_ser_dialog
+        self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
+        self.logger = logger
+
         if __name__ == "__main__":
-            self.w_ser_dialog: SerialConnect = w_ser_dialog
+            log_init()
             self.task_manager = AsyncTaskManager()
             w_ser_dialog.checkBox_mpp_only.setHidden(True)
-
-        else:
-            self.w_ser_dialog: SerialConnect = self.parent.w_ser_dialog  # type: ignore
 
         self.pushButton_mpp_request.clicked.connect(self.pushButton_mpp_request_hendler)
         self.pushButton_mpp_ddii_request.clicked.connect(self.pushButton_mpp_ddii_request_hendler)
 
 
-    def pushButton_mpp_request_hendler(self):
-        ...
-    
-    def pushButton_mpp_ddii_request_hendler(self):
-        ...
+    @qasync.asyncSlot()
+    async def pushButton_mpp_request_hendler(self):
+        self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
+        data: bytes = await self.mpp_cmd.get_mpp_struct()
+        df = mpp_unit.parse(data)
+        df_model = DfModel(df)
+        self.tableView_mpp_df.setModel(df_model)
 
-    
+    @qasync.asyncSlot()
+    async def pushButton_mpp_ddii_request_hendler(self):
+        self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
+        data: bytes = await self.mpp_cmd.get_ddii_mpp_struct()
+        df = mpp_ddii_unyt.parse(data)
+        df_model = DfModel(df)
+        self.tableView_mpp_ddii_df.setModel(df_model)
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

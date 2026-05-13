@@ -24,6 +24,7 @@ sys.path.append(str(modules_path))
 
 # from Engine.widgets.oscilloscope.flux_widget import FluxWidget  # noqa: E402
 from Main.widgets.oscilloscope.graph_widget import GraphWidget  # noqa: E402
+from Main.widgets.oscilloscope.mpp_data_widget import MPPDataWidget  # noqa: E402
 # from Engine.widgets.oscilloscope.run_flux_widget import RunFluxWidget  # noqa: E402
 from Main.widgets.oscilloscope.run_meas_widget import RunMeasWidget  # noqa: E402
 # from Engine.widgets.viewer.explorer_hdf5_widget import ExplorerHDF5Widget  # noqa: E402
@@ -63,6 +64,7 @@ class WindowLinker(QtWidgets.QMainWindow):
                 "Меню запуска": self.run_meas_widget,
                 "Измерение": self.measure_widget,
                 # "Счетчик частиц": self.flux_widget,
+                "MPP data": self.mpp_data_widget,
                 "spacer": spacer_v,
                 "Подключение": self.w_ser_dialog,
             }
@@ -91,6 +93,7 @@ class WindowLinker(QtWidgets.QMainWindow):
                 break
         self.measure_widget: MeasureWidget = MeasureWidget()
         self.run_meas_widget: RunMeasWidget = RunMeasWidget(self)
+        self.mpp_data_widget: MPPDataWidget = MPPDataWidget(self.w_ser_dialog, self)
         self.client = self.w_ser_dialog.client
         model = self.widget_model()
         self.tab_widget = create_tab_widget_items(model, self.on_tab_widget_handler)
