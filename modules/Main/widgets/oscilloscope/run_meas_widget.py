@@ -94,7 +94,7 @@ class RunMeasWidget(QtWidgets.QDialog):
             self.task_manager = AsyncTaskManager(self.logger)
             self.pushButton_run_measure.clicked.connect(self.pushButton_run_measure_handler)
             self.pushButton_calibr_acq.clicked.connect(self.pushButton_calibr_acq_handler)
-            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface(self.logger)
+            self.cm_cmd, self.mpp_cmd = self.w_ser_dialog.get_commands_interface()
         else:
             self.task_manager = AsyncTaskManager()
 

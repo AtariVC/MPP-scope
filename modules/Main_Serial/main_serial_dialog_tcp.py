@@ -95,6 +95,7 @@ class SerialConnect(QtWidgets.QWidget, EnvironmentVar):
     def __init__(self, logger, **kwargs) -> None:
         super().__init__(**kwargs)
         loadUi(Path(__file__).parents[0].joinpath("DialogSerialTCP.ui"), self)
+        self.tabWidget_serial.setCurrentIndex(0)
         self.mw = ModbusWorker()
         self.logger = logger
         self.comboBox_comm = CustomComboBox_COMport()

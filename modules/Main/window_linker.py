@@ -22,6 +22,7 @@ modules_path = Path(__file__).resolve().parent.parent
 sys.path.append(str(src_path))
 sys.path.append(str(modules_path))
 
+from __version__ import version
 # from Engine.widgets.oscilloscope.flux_widget import FluxWidget  # noqa: E402
 from Main.widgets.oscilloscope.graph_widget import GraphWidget  # noqa: E402
 from Main.widgets.oscilloscope.mpp_data_widget import MPPDataWidget  # noqa: E402
@@ -48,6 +49,7 @@ class WindowLinker(QtWidgets.QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         loadUi(Path(__file__).parent.joinpath("window_linker.ui"), self)
+        self.setWindowTitle(f"mppUI v{version}")
         self.resize(1300, 800)
         self.mw: ModbusWorker = ModbusWorker()
         self.parser: Parsers = Parsers()

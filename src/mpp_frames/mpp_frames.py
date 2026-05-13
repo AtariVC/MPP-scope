@@ -1,4 +1,5 @@
-from bytes_parser.frame import Frame, Row
+from bytes_parser.frame import Frame
+from bytes_parser.row import Row
 
 def time_to_sec(field: Row):
     sec = int.from_bytes(field.raw_val, "big")*25*10**-9
