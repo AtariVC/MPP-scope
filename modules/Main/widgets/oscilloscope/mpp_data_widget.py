@@ -55,6 +55,7 @@ class MPPDataWidget(QtWidgets.QDialog):
         self.pushButton_mpp_ddii_request.clicked.connect(self.pushButton_mpp_ddii_request_hendler)
 
     def _set_df_to_table(self, table: QtWidgets.QTableView, df):
+        df = df.drop(columns=["IsOK", "ErrCnt"], errors="ignore")
         header = [str(column) for column in df.columns]
 
         if isinstance(table, QtWidgets.QTableWidget):
